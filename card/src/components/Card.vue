@@ -1,87 +1,141 @@
 <template>
-    <div class="card-container">
+    <!--    <div class="card-container">-->
 
 
+    <div class="card">
 
-        <div class="card">
-
-
-
-            <div class="heading">
-                <img height="60px" width="50px" v-if="currentEstablishment.premium" class="premium-ribbon" src="@/assets/premium-ribbon.png">
-                <h2>{{currentEstablishment.name}}</h2>
-                <div class="tourism-grading" :style="cssVars" >
-
-                    <img :style="cssVars" v-for="index in currentEstablishment.tourismGrading" :key="`tgcsa--${index}`"
-                         src="@/assets/tgcsa.svg">
-                </div>
-            </div>
-
-            <div class="carousel">
-
-                <agile :autoplay-speed="5000" :speed="2500" fade autoplay>
-                    <div class="slide" v-for="(image, index) in currentEstablishment.images" :key="`image--${index}`">
-                        <img class="image" :src="image" :alt="`image--${index}`">
-                    </div>
-                    <template v-slot:prevButton>
-                        <img class="chevron-left" height="30px" width="30px" src="@/assets/chevron-left.svg">
-                    </template>
-                    <template v-slot:nextButton>
-                        <img height="30px" width="30px" src="@/assets/chevron-right.svg">
-
-                    </template>
-                </agile>
-            </div>
-
-            <div class="info-container">
-
-                <div class="info-icons left">
-                    <div class="icon-left">
-                        <div class="bed-count">3</div>
-                        <img class="icon" src="@/assets/double-bed.svg">
-                    </div>
-
-                    <div class="icon-left">
-                        <div class="bed-count">2</div>
-                        <img class="icon icon-left" src="@/assets/single-bed.svg">
-                    </div>
-
-                    <div class="icon-left">
-
-                        <div>$$$</div>
-                        <div class="price-container">
-                            <div>from</div>
-                            <div class="price"><b>R10</b></div>
-                        </div>
-                    </div>
-
-
-
-                </div>
-                <div class="view-more">
-                    <div class="view-more-button">
-                        view more
-                    </div>
-
-                </div>
-                <div class="info-icons right">
-                    <img class="icon icon-right" src="@/assets/user-rating-star.svg">
-                    <img class="icon icon-right" src="@/assets/review-icon.svg">
-                </div>
-
-            </div>
-            <p>{{currentEstablishment.shortDescription}}</p>
+        <div class="premium-banner">
+            <div></div>
+            <div class="premium-text">PREMIUM</div>
         </div>
+
+
+        <div class="heading">
+            <div class="establishment">
+            <div class="name">{{currentEstablishment.name}}</div>
+            <div class="location">{{currentEstablishment.city}}</div>
+            </div>
+            <div class="tourism-grading" :style="cssVars">
+
+                <img :style="cssVars" v-for="index in currentEstablishment.tourismGrading" :key="`tgcsa--${index}`"
+                     src="@/assets/tgcsa.svg">
+            </div>
+        </div>
+        <div class="ux-button-container">
+            <img v-if="currentEstablishment.favourite" class="ux-button" src="@/assets/like.png">
+            <img v-else class="ux-button" src="@/assets/not-like.png">
+            <img class="ux-button" src="@/assets/send.png">
+
+        </div>
+
+        <div class="carousel">
+
+            <agile :autoplay-speed="5000" :speed="2500" fade autoplay>
+                <div class="slide" v-for="(image, index) in currentEstablishment.images" :key="`image--${index}`">
+                    <img class="image" :src="image" :alt="`image--${index}`">
+                </div>
+                <template v-slot:prevButton>
+                    <img class="chevron-left" height="30px" width="30px" src="@/assets/chevron-left.svg">
+                </template>
+                <template v-slot:nextButton>
+                    <img height="30px" width="30px" src="@/assets/chevron-right.svg">
+
+                </template>
+            </agile>
+        </div>
+
+        <div class="info-container">
+
+
+            <div class="info-icons-left">
+
+                <div class="icon-left icon-price">
+
+                    <div class="price-container">
+
+                        <div class="price">R10,000+<span class="per-night">/nag</span></div>
+                        <div class="price-range">RRR</div>
+                    </div>
+
+                </div>
+
+                <div class="icon-left icon-bed">
+                    <div class="bed-count">3</div>
+                    <img class="icon icon-double-bed" src="@/assets/double-bed-color.png">
+                </div>
+            </div>
+
+            <div class="button-container" @click.prevent="setRating">
+
+                <div class="action-buttons">
+                    <star-rating
+                            :show-rating="false"
+                            :rating="rating"
+                            :read-only="true"
+                            :star-size="20"
+                            :glow="0"
+                            :increment="0.5"
+                            inactive-color="#E5F4E3"
+                            active-color="#ED762D"
+                            :border-width="2"
+                            border-color="#FFFFFF"
+                            :star-points="[23,2, 14,17, 0,19, 10,34, 7,50, 23,43, 38,50, 36,34, 46,19, 31,17]"
+                    >
+                    </star-rating>
+                    <div class="review-count">({{2}})</div>
+
+                </div>
+
+                <div class="view-more">
+                    <div class="view-more-button view-more-button-left book">
+                        bespreek
+                    </div>
+                    <div class="view-more-button view-more-button-right">
+                        sien meer
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="info-icons-right">
+                <div class="icon-right">
+                    <div class="icon-right-text">{{currentEstablishment.type}}</div>
+                    <img class="icon-clock-out" src="@/assets/building-type.png">
+                </div>
+                <div class="icon-right">
+                    <div class="icon-right-text">{{currentEstablishment.clockOut}}</div>
+                    <img class="icon-clock-out" src="@/assets/clockwise-rotation.png">
+                </div>
+
+
+            </div>
+
+
+        </div>
+        <p>{{currentEstablishment.shortDescription}}</p>
     </div>
+    <!--    </div>-->
 </template>
 
 <script>
     import {mapState} from 'vuex';
+    import StarRating from 'vue-star-rating'
 
     export default {
         name: 'Card',
+        components: {
+            StarRating
+        },
         props: {
             msg: String
+        },
+        data() {
+            return {
+                rating: 4
+            }
+        },
+        mounted() {
+            this.rating = this.currentEstablishment.averageUserRating.overall;
         },
         computed: {
             ...mapState([
@@ -94,6 +148,17 @@
                 }
             }
         },
+        methods: {
+            async setRating() {
+
+                console.log('CLICKED THE DIV');
+
+            },
+            showCurrentRating(rating) {
+
+                this.currentRating = (rating / 5) * 100 + "%"
+            },
+        }
 
     }
 </script>
@@ -119,9 +184,7 @@
 
             @if length($item) > 1 {
                 $result: $result + debug($item, $type, false);
-            }
-
-            @else {
+            } @else {
                 $result: if($type,
                         $result + $space + "(" + type-of($item) + ") " + $item,
                         $result + $space + $item
@@ -156,58 +219,106 @@
         }
     }
 
-    .card-container {
-        display: block;
-        position: absolute;
-        top: 50px;
-        width: 100%;
-    }
+    /*.card-container {*/
+    /*    display: block;*/
+    /*    position: absolute;*/
+    /*    top: 50px;*/
+    /*    width: 100%;*/
+    /*}*/
 
     .card {
-        height: 800px;
+        display: block;
+        top: 50px;
         width: $cardWidth;
-        border: 1px solid black;
+        border: 1px solid #5A5B5D;
         margin: 0 auto;
 
         p {
-            margin: 10px;
+            padding: 10px;
+            margin: 0;
+            background-color: #FFF9EF;
         }
     }
 
     .heading {
         position: absolute;
-        top: 0;
         width: $cardWidth;
-        height: 5%;
+        height: 50px;
         background-color: rgba(black, .5);
         color: white;
         z-index: 1;
         text-align: left;
+    }
 
-        h2 {
+    .ux-button-container {
+        height: 50px;
+        top: 115px;
+        position: absolute;
+        z-index: 1;
+        width: $cardWidth;
+    }
+
+    .ux-button {
+        height: 20px;
+        float: right;
+        margin-right: 5px;
+    }
+
+    .establishment {
+        position: absolute;
+        bottom: 2px;
+        margin: 0 0 0 5px;
+        color: white;
+        float: left;
+    }
+
+    .location {
+        font-size: 10px;
+        font-weight: bold;
+    }
+
+    .name {
+        font-size: 24px;
+        position: relative;
+        top: 6px;
+    }
+
+    .premium-banner {
+        width: 20px;
+        height: 290px;
+        position: absolute;
+        color: white;
+        z-index: 1;
+
+
+        &:after {
+            content: '';
             position: absolute;
-            bottom: 0;
-            margin: 0 0 0 5px;
-            color: white;
-            float: left;
-        }
-
-        div {
+            top: 295px;
+            left: 0px;
+            width: 100%;
+            height: 100%;
+            background: #ed762d;
+            transform-origin: 0 0;
+            transform: rotate(180deg);
 
         }
     }
 
-    .premium-ribbon {
+    .premium-text {
         position: absolute;
+        bottom: 0;
+        left: -20px;
         z-index: 1;
-        right: -22px;
-        top: -20px;
+
+        transform-origin: 0 0;
+        transform: rotate(-90deg);
     }
 
     .tourism-grading {
         float: right;
-        height: 100%;
-        margin-right: var(--grading-margin);
+        height: 80%;
+        margin-right: 10px;
 
         img {
             width: 20px;
@@ -221,71 +332,207 @@
     }
 
     .info-container {
-        width: 100%;
-        height: 50px;
-        background-color: #dddddd;
-        border: 1px solid black;
+        height: 52px;
+        background-color: #5A5B5D;
+
+        color: white;
+        border: {
+            top: 1px solid black;
+            bottom: 1px solid black;
+
+        }
         display: flex;
         flex-direction: row;
 
         div {
-            flex: .333;
+            /*flex: .4;*/
             vertical-align: middle;
+            justify-content: center;
         }
-    }
-
-    .icon {
-        height: 30px;
-        width: 30px;
-
-        &-left {
-
-                display: inline-block;
-                margin: 0 5px 0 5px;
-
-        }
-
-        &-right {
-            padding: 6% 0;
-            margin: 0 10px 0 10px;
-        }
-
     }
 
     .info-icons {
 
+        &-right {
+            position: relative;
+            top: 20px;
+            display: flex;
+            flex: .3;
+        }
+
+        &-left {
+            position: relative;
+            flex: .3;
+        }
+
+    }
+
+
+    .icon {
+
+        &-right {
+            display: inline-block;
+            width: 40%;
+            position: relative;
+            bottom: 15px;
+        }
+
+        &-left {
+
+            display: inline-block;
+            margin: 0 10px;
+
+
+        }
+
+        &-middle {
+            position: relative;
+            top: 3px;
+            width: 30%;
+            display: inline-block;
+
+            img {
+                vertical-align: middle;
+            }
+        }
+
+        &-bed {
+            position: relative;
+            width: 20%;
+            right: 5px;
+
+        }
+
+        &-price {
+            width: 50%;
+        }
+
+        &-single-bed {
+            height: 20px;
+            /*width: 30px;*/
+        }
+
+        &-double-bed {
+            height: 20px;
+            position: relative;
+            top: 2px;
+        }
+
+        &-clock-out {
+            height: 20px;
+            vertical-align: middle;
+        }
+
+        &-right-text {
+            font-size: 12px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+    }
+
+    .action-buttons {
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+    }
+
+    .vue-star-rating {
+        position: relative;
+        top: 0.5px;
+    }
+
+    .review-count {
+        position: relative;
+        font-size: 10px;
+        margin-left: 2px;
+        top: 1px;
+    }
+
+    .review {
+        position: relative;
+        top: -2px;
+    }
+
+    .icon-review {
+        margin-top: 0;
+        height: 35px;
+    }
+
+    .icon-user-rating {
+        height: 40px;
     }
 
     .bed-count {
+        font-size: 14px;
         position: relative;
-        top: 5px;
+        top: 7px;
+        margin-bottom: 4px;
+        font-weight: bold;
     }
 
     .price-container {
-        font-size: 10px;
         position: relative;
+
     }
 
     .price {
+        font-size: 14px;
         position: relative;
-        bottom: 3px;
+        top: 2px;
+        font-weight: bold;
     }
 
+    .price-range {
+        font-weight: bolder;
+        font-size: 13px;
+        color: #ED762D;
+        position: relative;
+        top: 2px;
+    }
 
+    .per-night {
+        font-size: 8px;
+        font-weight: bolder;
+    }
+
+    .button-container {
+        display: flex;
+        flex-direction: column;
+        flex: .4;
+    }
 
     .view-more {
+        flex: 0.5;
         margin-top: auto;
-        height: 60%;
+        height: 40%;
         color: white;
-        background-color: black;
+        background: #ED762D;
         border-radius: 5px 5px 0 0;
         display: table;
 
+        div.view-more-button-left:hover {
+            background-color: black;
+            color: #ED762D;
+            border-radius: 5px 0 0 0;
+        }
+
+        div.view-more-button-right:hover {
+            background-color: black;
+            color: #ED762D;
+            border-radius: 0 5px 0 0;
+        }
+
+    }
+
+    .book {
+        border-right: 1px solid #5d5a5a;
     }
 
     .view-more-button {
         display: table-cell;
         vertical-align: middle;
+        cursor: pointer;
     }
 
     .agile {
@@ -323,6 +570,7 @@
         left: 50%;
         position: absolute;
         transform: translateX(-50%);
+        margin-bottom: 0;
     }
 
     .agile__dot {

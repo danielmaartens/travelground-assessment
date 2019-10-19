@@ -12,10 +12,13 @@ export default new Vuex.Store({
     imageWidth: IMAGE_WIDTH,
     currentEstablishment: {
       name: 'Tsala Treetop Lodge',
+      city: 'Plettenbergbaai',
+      type: 'Hotel',
+      clockOut: '11:00',
       shortDescription: 'Dié lodge se toweragtige ligging is onweerstaanbaar vir diegene wat op soek is na eksklusiewe verblyf.',
       tourismGrading: 5,
       averageUserRating: {
-        overall: 0.8
+        overall: 0.8*5
       },
       premium: true,
       images: [
