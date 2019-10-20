@@ -1,7 +1,4 @@
 <template>
-    <!--    <div class="card-container">-->
-
-
     <div class="card">
 
         <div class="premium-banner">
@@ -67,7 +64,7 @@
 
             <div class="button-container" @click.prevent="setRating">
 
-                <div class="action-buttons">
+                <div @click.prevent="toggleReview()" class="action-buttons">
                     <star-rating
                             :show-rating="false"
                             :rating="rating"
@@ -87,10 +84,10 @@
                 </div>
 
                 <div class="view-more">
-                    <div class="view-more-button view-more-button-left book">
+                    <div @click.prevent="toggleBooking()" class="view-more-button view-more-button-left book">
                         bespreek
                     </div>
-                    <div class="view-more-button view-more-button-right">
+                    <div @click.prevent="toggleViewMore()" class="view-more-button view-more-button-right">
                         sien meer
                     </div>
 
@@ -112,14 +109,52 @@
 
 
         </div>
-        <p>{{currentEstablishment.shortDescription}}</p>
+
+
+        <div class="bottom-container">
+            <div class="bottom-container-page booking-container">
+                <button>hi</button>
+                <button>hi</button>
+                <button>hi</button>
+                <button>hi</button>
+                <button>hi</button>
+                <button>hi</button>
+                <button>hi</button>
+                <button>hi</button>
+            </div>
+            <div class="bottom-container-page view-more-container">
+                <button>hi</button>
+                <button>hi</button>
+                <button>hi</button>
+                <button>hi</button>
+                <button>hi</button>
+                <button>hi</button>
+                <button>hi</button>
+                <button>hi</button>
+            </div>
+            <div class="bottom-container-page review-container">
+                <button>hi</button>
+                <button>hi</button>
+                <button>hi</button>
+                <button>hi</button>
+                <button>hi</button>
+                <button>hi</button>
+                <button>hi</button>
+                <button>hi</button>
+            </div>
+        <div class="brief-info">
+            <p>{{currentEstablishment.shortDescription}}</p>
+        </div>
+
+        </div>
     </div>
-    <!--    </div>-->
 </template>
 
 <script>
     import {mapState} from 'vuex';
-    import StarRating from 'vue-star-rating'
+    import StarRating from 'vue-star-rating';
+    import JQuery from 'jquery';
+    const $ = JQuery;
 
     export default {
         name: 'Card',
@@ -131,10 +166,15 @@
         },
         data() {
             return {
-                rating: 4
+                rating: 0,
+                showBriefInfo: true,
+                showBooking: false,
+                showMore: false,
+                showReview: false,
             }
         },
         mounted() {
+            console.log('CARD');
             this.rating = this.currentEstablishment.averageUserRating.overall;
         },
         computed: {
@@ -158,6 +198,51 @@
 
                 this.currentRating = (rating / 5) * 100 + "%"
             },
+            toggleBooking() {
+
+                if (this.showBriefInfo) this.toggleBriefInfo();
+                if (this.showMore) this.toggleViewMore();
+                if (this.showReview) this.toggleReview();
+
+                this.showBooking = !this.showBooking;
+                const height = this.showBooking ? '100%' : 0;
+
+                $('.booking-container').css('max-height', height);
+            },
+            toggleViewMore() {
+
+                if (this.showBriefInfo) this.toggleBriefInfo();
+                if (this.showBooking) this.toggleBooking();
+                if (this.showReview) this.toggleReview();
+
+                this.showMore = !this.showMore;
+                const height = this.showMore ? '100%' : 0;
+
+                $('.view-more-container').css('max-height', height);
+            },
+            toggleReview() {
+
+                if (this.showBriefInfo) this.toggleBriefInfo();
+                if (this.showBooking) this.toggleBooking();
+                if (this.showMore) this.toggleViewMore();
+
+                this.showReview = !this.showReview;
+                const height = this.showReview ? '100%' : 0;
+
+                $('.review-container').css('max-height', height);
+            },
+            toggleBriefInfo() {
+                this.showBriefInfo = !this.showBriefInfo;
+                const height = this.showBriefInfo ? '100%' : 0;
+                const opacity = this.showBriefInfo ? 1 : 0;
+
+                $('.brief-info').css('max-height', height);
+                $('.brief-info p').css('opacity', opacity);
+                $('.card').css('border-bottom', 'none');
+            },
+            toggleInfoContainerBorder() {
+
+            }
         }
 
     }
@@ -166,6 +251,7 @@
 <style lang="scss">
 
     $cardWidth: 500px;
+    $bottomWidth: 502px;
     $carouselHeight: 300px;
 
     @function debug($list, $type: true, $root: true) {
@@ -219,25 +305,12 @@
         }
     }
 
-    /*.card-container {*/
-    /*    display: block;*/
-    /*    position: absolute;*/
-    /*    top: 50px;*/
-    /*    width: 100%;*/
-    /*}*/
-
     .card {
         display: block;
         top: 50px;
         width: $cardWidth;
-        border: 1px solid #5A5B5D;
+        /*border: 1px solid #5A5B5D;*/
         margin: 0 auto;
-
-        p {
-            padding: 10px;
-            margin: 0;
-            background-color: #FFF9EF;
-        }
     }
 
     .heading {
@@ -262,6 +335,7 @@
         height: 20px;
         float: right;
         margin-right: 5px;
+        opacity: 0.8;
     }
 
     .establishment {
@@ -366,7 +440,6 @@
         }
 
     }
-
 
     .icon {
 
@@ -533,6 +606,62 @@
         display: table-cell;
         vertical-align: middle;
         cursor: pointer;
+    }
+
+    .bottom-container {
+        display: flex;
+    }
+
+    @mixin bottom-container-page {
+        width: 500px;
+        position: absolute;
+        overflow: hidden;
+        max-height: 0;
+        transition: max-height .5s 0.3s ease-in-out;
+        background-color: #5d5a5a;
+        z-index: 1;
+    }
+
+    .bottom-container-page {
+
+    }
+
+    .booking-container {
+        @include bottom-container-page;
+    }
+
+    .view-more-container {
+        @include bottom-container-page;
+    }
+
+    .review-container {
+        @include bottom-container-page;
+    }
+
+    .brief-info {
+        transition: max-height 0.5s linear, padding 0.5s linear;
+        box-sizing: border-box;
+        overflow: hidden;
+        width: 500px;
+        max-height: 100%;
+        position: absolute;
+        transform: scale(1);
+        padding: 10px;
+        margin: 0;
+        background-color: #FFF9EF;
+        border: {
+            left: 1px solid #5A5B5D;
+            right: 1px solid #5A5B5D;
+            bottom: 1px solid #5A5B5D;
+        }
+
+        p {
+            margin: 0 auto;
+            transition: opacity 0.5s linear;
+            opacity: 1;
+            /*width: 90%;*/
+            /*height: 90%;*/
+        }
     }
 
     .agile {
