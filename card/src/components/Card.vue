@@ -24,7 +24,7 @@
             </div>
         </div>
         <div class="ux-button-container">
-            <img v-if="currentEstablishment.favourite" class="ux-button" src="@/assets/like.png">
+            <img v-if="establishment.favourite" class="ux-button" src="@/assets/like.png">
             <img v-else class="ux-button" src="@/assets/not-like.png">
             <img class="ux-button" src="@/assets/send.png">
 
@@ -54,7 +54,7 @@
 
                 <div @mousemove="(e) => onMouseMove(e, 'price-tooltip', 10)" class="icon-left icon-price price">
                     <div class="price-tooltip">
-                        <span><b>{{priceRankDescription}}</b> teen <b>{{minPrice}}</b> vir die <b>goedkoopste</b> kamer <b>vanaand</b></span>
+                        <span><b>{{priceRankDescription}}</b> teen <b>{{minPrice}} per nag tans</b><br>vir die <b>goedkoopste kamer beskikbaar vanaand</b></span>
                     </div>
                     <div class="price-value">{{minPrice}}+<span class="per-night">/nag</span></div>
                     <div class="price-rank">{{priceRank}}</div>
@@ -72,7 +72,9 @@
 
             <div class="button-container" @click.prevent="setRating">
 
-                <div @mousemove="(e) => onMouseMove(e, 'rating-review-tooltip')" @click.prevent="toggleReview()"
+                <div
+                        @mousemove="(e) => onMouseMove(e, 'rating-review-tooltip')"
+                     @click.prevent="toggle(pages.REVIEW)"
                      class="rating-review">
                     <div class="rating-review-tooltip">
                         <span>
@@ -100,13 +102,13 @@
                 </div>
 
                 <div class="view-more">
-                    <div @click.prevent="toggleBooking()" class="view-more-button view-more-button-left booking">
+                    <div @click.prevent="toggle(pages.BOOKING)" data-action="booking" :class="`view-more-button view-more-button-left booking ${showBooking ? 'active' : ''}`">
                         <img class="booking-icon" src="@/assets/booking.png">
                         <span class="booking-text">
                         bespreek
                     </span>
                     </div>
-                    <div @click.prevent="toggleViewMore()" class="view-more-button view-more-button-right">
+                    <div @click.prevent="toggle(pages.VIEW_MORE)" :class="`view-more-button view-more-button-right ${showMore ? 'active' : ''}`">
                     <span>
                         weet meer
                     </span>
@@ -143,34 +145,34 @@
 
         <div class="bottom-container">
             <div class="bottom-container-page booking-container">
-                <button>hi</button>
-                <button>hi</button>
-                <button>hi</button>
-                <button>hi</button>
-                <button>hi</button>
-                <button>hi</button>
-                <button>hi</button>
-                <button>hi</button>
+                <button>booking</button><br>
+                <button>booking</button><br>
+                <button>booking</button><br>
+                <button>booking</button><br>
+                <button>booking</button><br>
+                <button>booking</button><br>
+                <button>booking</button><br>
+                <button>booking</button><br>
             </div>
             <div class="bottom-container-page view-more-container">
-                <button>hi</button>
-                <button>hi</button>
-                <button>hi</button>
-                <button>hi</button>
-                <button>hi</button>
-                <button>hi</button>
-                <button>hi</button>
-                <button>hi</button>
+                <button>view more</button><br>
+                <button>view more</button><br>
+                <button>view more</button><br>
+                <button>view more</button><br>
+                <button>view more</button><br>
+                <button>view more</button><br>
+                <button>view more</button><br>
+                <button>view more</button><br>
             </div>
             <div class="bottom-container-page review-container">
-                <button>hi</button>
-                <button>hi</button>
-                <button>hi</button>
-                <button>hi</button>
-                <button>hi</button>
-                <button>hi</button>
-                <button>hi</button>
-                <button>hi</button>
+                <button>review</button><br>
+                <button>review</button><br>
+                <button>review</button><br>
+                <button>review</button><br>
+                <button>review</button><br>
+                <button>review</button><br>
+                <button>review</button><br>
+                <button>review</button><br>
             </div>
             <div class="brief-info">
                 <p>{{currentEstablishment.shortDescription}}</p>
@@ -187,6 +189,12 @@
 
     const $ = JQuery;
 
+    const pages = {
+        BOOKING: 'booking',
+        REVIEW: 'review',
+        VIEW_MORE: 'view-more'
+    };
+
     export default {
         name: 'Card',
         components: {
@@ -198,7 +206,7 @@
         data() {
             return {
                 rating: 0,
-                showBriefInfo: true,
+                showHomePage: true,
                 showBooking: false,
                 showMore: false,
                 showReview: false,
@@ -206,7 +214,9 @@
                 priceRank: '',
                 availability: {},
                 establishment: {},
-                priceRankDescription: ''
+                priceRankDescription: '',
+                previouslySelectedPage: null,
+                pages
             }
         },
         mounted() {
@@ -245,47 +255,54 @@
 
                 this.currentRating = (rating / 5) * 100 + "%"
             },
-            toggleBooking() {
+            toggle(page) {
 
-                if (this.showBriefInfo) this.toggleBriefInfo();
-                if (this.showMore) this.toggleViewMore();
-                if (this.showReview) this.toggleReview();
+                const toggleBooking = page === pages.BOOKING || this.previouslySelectedPage === pages.BOOKING;
+                const toggleViewMore = page === pages.VIEW_MORE || this.previouslySelectedPage === pages.VIEW_MORE;
+                const toggleReview = page === pages.REVIEW || this.previouslySelectedPage === pages.REVIEW;
 
-                this.showBooking = !this.showBooking;
-                const height = this.showBooking ? '100%' : 0;
+                this.toggleReview(toggleReview);
+                this.toggleBooking(toggleBooking);
+                this.toggleViewMore(toggleViewMore);
 
-                $('.booking-container').css('max-height', height);
+                const showBriefInfo = !this.showReview && !this.showBooking && !this.showMore;
+
+                this.showBriefInfo(showBriefInfo);
+
+                this.previouslySelectedPage = showBriefInfo ? null : page;
             },
-            toggleViewMore() {
+            toggleBooking(toggle) {
 
-                if (this.showBriefInfo) this.toggleBriefInfo();
-                if (this.showBooking) this.toggleBooking();
-                if (this.showReview) this.toggleReview();
-
-                this.showMore = !this.showMore;
-                const height = this.showMore ? '100%' : 0;
-
-                $('.view-more-container').css('max-height', height);
+                if (toggle) {
+                    this.showBooking = !this.showBooking;
+                    const height = this.showBooking ? '100%' : 0;
+                    $('.booking-container').css('max-height', height);
+                }
             },
-            toggleReview() {
+            toggleViewMore(toggle) {
 
-                if (this.showBriefInfo) this.toggleBriefInfo();
-                if (this.showBooking) this.toggleBooking();
-                if (this.showMore) this.toggleViewMore();
-
-                this.showReview = !this.showReview;
-                const height = this.showReview ? '100%' : 0;
-
-                $('.review-container').css('max-height', height);
+                if (toggle) {
+                    this.showMore = !this.showMore;
+                    const height = this.showMore ? '100%' : 0;
+                    $('.view-more-container').css('max-height', height);
+                }
             },
-            toggleBriefInfo() {
-                this.showBriefInfo = !this.showBriefInfo;
-                const height = this.showBriefInfo ? '100%' : 0;
-                const opacity = this.showBriefInfo ? 1 : 0;
+            toggleReview(toggle) {
 
-                $('.brief-info').css('max-height', height);
-                $('.brief-info p').css('opacity', opacity);
-                $('.card').css('border-bottom', 'none');
+                if (toggle) {
+                    this.showReview = !this.showReview;
+                    const height = this.showReview ? '100%' : 0;
+                    $('.review-container').css('max-height', height);
+                }
+            },
+            showBriefInfo(show) {
+                    const height = show ? '100%' : 0;
+                    const opacity = show ? 1 : 0;
+
+                    $('.brief-info').css('max-height', height);
+                    $('.brief-info p').css('opacity', opacity);
+                    $('.card').css('border-bottom', 'none');
+
             },
             onMouseMove(e, tooltipClass, yOffset) {
                 const tooltip = $(`.${tooltipClass}`);
@@ -696,18 +713,6 @@
         border-radius: 5px 5px 0 0;
         display: table;
 
-        div.view-more-button-left:hover {
-            background-color: black;
-            color: #ED762D;
-            border-radius: 5px 0 0 0;
-        }
-
-        div.view-more-button-right:hover {
-            background-color: black;
-            color: #ED762D;
-            border-radius: 0 5px 0 0;
-        }
-
     }
 
     .booking {
@@ -739,6 +744,19 @@
             height: 15px;
             width: 15px;
         }
+
+        &:hover, &.active {
+            background-color: black;
+            color: #ED762D;
+        }
+
+        &-left:hover, &-left.active {
+            border-radius: 5px 0 0 0;
+        }
+
+        &-right:hover, &-right.active {
+            border-radius: 0 5px 0 0;
+        }
     }
 
     .bottom-container {
@@ -750,7 +768,7 @@
         position: absolute;
         overflow: hidden;
         max-height: 0;
-        transition: max-height .5s 0.3s ease-in-out;
+        transition: max-height .5s linear;
         background-color: #5d5a5a;
         z-index: 1;
     }
