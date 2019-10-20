@@ -1,7 +1,12 @@
 <template>
     <div class="card">
 
-        <div class="premium-banner">
+        <div @mousemove="(e) => onMouseMove(e, 'premium-banner-tooltip', 10)" class="premium-banner">
+            <div class="premium-banner-tooltip">
+                <span>
+                    Dié verblyf is <b>top qualiteit</b> !
+                </span>
+            </div>
             <div></div>
             <div class="premium-text">PREMIUM</div>
         </div>
@@ -46,25 +51,36 @@
 
             <div class="info-icons-left">
 
-                <div class="icon-left icon-price">
 
-                    <div class="price-container">
-
-                        <div class="price">R10,000+<span class="per-night">/nag</span></div>
-                        <div class="price-range">RRR</div>
+                <div @mousemove="(e) => onMouseMove(e, 'price-tooltip', 10)" class="icon-left icon-price price">
+                    <div class="price-tooltip">
+                        <span><b>{{priceRankDescription}}</b> teen <b>{{minPrice}}</b> vir die <b>goedkoopste</b> kamer <b>vanaand</b></span>
                     </div>
-
+                    <div class="price-value">{{minPrice}}+<span class="per-night">/nag</span></div>
+                    <div class="price-rank">{{priceRank}}</div>
                 </div>
 
-                <div class="icon-left icon-bed">
-                    <div class="bed-count">3</div>
+
+                <div @mousemove="(e) => onMouseMove(e, 'availability-tooltip', 10)" class="icon-left availability">
+                    <div class="availability-tooltip">
+                        <span><b>{{availability.overall}} kamers</b> is tans <b>beskikbaar</b></span>
+                    </div>
+                    <div class="bed-count">{{availability.overall}}</div>
                     <img class="icon icon-double-bed" src="@/assets/double-bed-color.png">
                 </div>
             </div>
 
             <div class="button-container" @click.prevent="setRating">
 
-                <div @click.prevent="toggleReview()" class="action-buttons">
+                <div @mousemove="(e) => onMouseMove(e, 'rating-review-tooltip')" @click.prevent="toggleReview()"
+                     class="rating-review">
+                    <div class="rating-review-tooltip">
+                        <span>
+                            <b>{{rating}} stêr</b> gradering uit <b>{{currentEstablishment.reviews.length}} resensies</b>.
+                        <br>
+                            <b>Kliek om almal te sien of om self een te los !</b>
+                        </span>
+                    </div>
                     <star-rating
                             :show-rating="false"
                             :rating="rating"
@@ -79,7 +95,7 @@
                             :star-points="[23,2, 14,17, 0,19, 10,34, 7,50, 23,43, 38,50, 36,34, 46,19, 31,17]"
                     >
                     </star-rating>
-                    <div class="review-count">({{2}})</div>
+                    <div class="review-count">({{currentEstablishment.reviews.length}})</div>
 
                 </div>
 
@@ -101,11 +117,19 @@
             </div>
 
             <div class="info-icons-right">
-                <div class="icon-right">
+                <div @mousemove="(e) => onMouseMove(e, 'building-type-tooltip', 10)" class="icon-right building-type">
+                    <div class="building-type-tooltip">
+                        <span>Dié verblyf is 'n <b>{{establishment.type}}</b></span>
+                    </div>
                     <div class="icon-right-text">{{currentEstablishment.type}}</div>
                     <img class="icon-clock-out" src="@/assets/building-type.png">
                 </div>
-                <div class="icon-right">
+                <div @mousemove="(e) => onMouseMove(e, 'clock-out-tooltip', 10)" class="icon-right clock-out">
+                    <div class="clock-out-tooltip">
+                        <span>
+                            Klok-uit tyd is om <b>{{establishment.clockOut}}</b>
+                        </span>
+                    </div>
                     <div class="icon-right-text">{{currentEstablishment.clockOut}}</div>
                     <img class="icon-clock-out" src="@/assets/clockwise-rotation.png">
                 </div>
@@ -178,22 +202,38 @@
                 showBooking: false,
                 showMore: false,
                 showReview: false,
+                minPrice: 0,
+                priceRank: '',
+                availability: {},
+                establishment: {},
+                priceRankDescription: ''
             }
         },
         mounted() {
             console.log('CARD');
-            this.rating = this.currentEstablishment.averageUserRating.overall;
+            const establishment = this.currentEstablishment;
+            this.establishment = establishment;
+
+            this.rating = establishment.averageUserRatings.overall;
+
+            const price = establishment.minimumCurrentPrice;
+            this.minPrice = this.convertPriceToString(price);
+
+            this.priceRank = this.convertPriceRankToString();
+            this.availability = establishment.availability;
+            this.priceRankDescription = this.priceRankDescriptions[establishment.priceRank];
         },
         computed: {
             ...mapState([
                     'currentEstablishment',
+                    'priceRankDescriptions'
                 ],
             ),
             cssVars() {
                 return {
                     '--grading-margin': (this.currentEstablishment.premium ? 32 : 10) + 'px',
                 }
-            }
+            },
         },
         methods: {
             async setRating() {
@@ -247,8 +287,21 @@
                 $('.brief-info p').css('opacity', opacity);
                 $('.card').css('border-bottom', 'none');
             },
-            toggleInfoContainerBorder() {
+            onMouseMove(e, tooltipClass, yOffset) {
+                const tooltip = $(`.${tooltipClass}`);
+                let x = (e.clientX) + 'px',
+                    y = (e.clientY + (yOffset || 20)) + 'px';
 
+                console.log('tip', tooltip);
+                tooltip.css('top', y);
+                tooltip.css('left', x);
+            },
+            convertPriceToString(price) {
+                return this.currentEstablishment.currencySymbol + price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            },
+            convertPriceRankToString() {
+                const rank = this.currentEstablishment.priceRank;
+                return this.currentEstablishment.currencySymbol.repeat(rank);
             }
         }
 
@@ -312,6 +365,35 @@
         }
     }
 
+    @mixin tooltip-hover() {
+
+        &-tooltip {
+            text-decoration: none;
+            position: fixed;
+            z-index: 2;
+
+            span {
+                display: none;
+                background-color: #FFF9EF;
+                padding: 2px 4px;
+                text-align: center;
+                font-size: 10px;
+                border-radius: 3px;
+                border: 1px solid black;
+                color: #5d5a5a;
+                z-index: 1;
+            }
+        }
+
+        &:hover &-tooltip span {
+
+            display: block;
+            position: fixed;
+            overflow: hidden;
+
+        }
+    }
+
     .card {
         display: block;
         top: 50px;
@@ -369,7 +451,8 @@
         height: 290px;
         position: absolute;
         color: white;
-        z-index: 1;
+        z-index: 2;
+        cursor: help;
 
 
         &:after {
@@ -384,6 +467,8 @@
             transform: rotate(180deg);
 
         }
+
+        @include tooltip-hover;
     }
 
     .premium-text {
@@ -477,16 +562,6 @@
             }
         }
 
-        &-bed {
-            width: 20%;
-            right: 5px;
-
-        }
-
-        &-price {
-            width: 50%;
-        }
-
         &-single-bed {
             height: 20px;
             /*width: 30px;*/
@@ -511,10 +586,35 @@
 
     }
 
-    .action-buttons {
+    .availability {
+        width: 20%;
+        right: 5px;
+        cursor: help;
+
+        @include tooltip-hover;
+
+        &-tooltip {
+
+        }
+
+    }
+
+    .building-type {
+        cursor: help;
+        @include tooltip-hover;
+    }
+
+    .clock-out {
+        cursor: help;
+        @include tooltip-hover;
+    }
+
+    .rating-review {
         cursor: pointer;
         display: flex;
         align-items: center;
+
+        @include tooltip-hover;
     }
 
     .vue-star-rating {
@@ -551,25 +651,30 @@
         font-weight: bold;
     }
 
-    .price-container {
-        position: relative;
-
-    }
-
     .price {
-        font-size: 14px;
         position: relative;
-        top: 2px;
-        font-weight: bold;
+        width: 50%;
+        cursor: help;
+
+        @include tooltip-hover;
+
+        &-value {
+            font-size: 14px;
+            position: relative;
+            top: 2px;
+            font-weight: bold;
+        }
+
+        &-rank {
+            font-weight: bolder;
+            font-size: 13px;
+            color: #ED762D;
+            position: relative;
+            top: 2px;
+        }
+
     }
 
-    .price-range {
-        font-weight: bolder;
-        font-size: 13px;
-        color: #ED762D;
-        position: relative;
-        top: 2px;
-    }
 
     .per-night {
         font-size: 8px;

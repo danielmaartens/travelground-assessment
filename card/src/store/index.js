@@ -5,21 +5,53 @@ Vue.use(Vuex);
 
 const IMAGE_WIDTH = 500;
 const IMAGE_HEIGHT = 300;
+const PRICE_RANK_DESCRIPTIONS = {
+  1: 'Verskriklik Goedkoop',
+  2: 'Goedkoop',
+  3: 'Redelik Geprys',
+  4: 'Luuks',
+  5: 'Ontsettend Luuks'
+};
 
 export default new Vuex.Store({
   state: {
     imageHeight: IMAGE_HEIGHT,
     imageWidth: IMAGE_WIDTH,
+    priceRankDescriptions: PRICE_RANK_DESCRIPTIONS,
     currentEstablishment: {
       name: 'Tsala Treetop Lodge',
       city: 'Plettenbergbaai',
       type: 'Hotel',
       clockOut: '11:00',
+      currencySymbol: 'R',
+      priceRank: 3,
+      availability: {
+        overall: 3,
+        rooms: {
+          single: 1,
+          double: 2
+        }
+      },
+      minimumCurrentPrice: 10047,
       shortDescription: 'Dié lodge se toweragtige ligging is onweerstaanbaar vir diegene wat op soek is na eksklusiewe verblyf.',
       tourismGrading: 5,
-      averageUserRating: {
+      averageUserRatings: {
         overall: 0.8*5
       },
+      reviews: [
+        {
+          comment: "Nice place.",
+          ratings: {
+            overall: 4,
+            service: 4,
+            cleanliness: 4,
+            bargain: 3,
+            location: 4,
+            safety: 5
+          }
+        }
+      ],
+
       premium: true,
       images: [
         'https://travelground.imgix.net/AAEAAQAAAAAAAAAAAAAAJDc2NDdjZWE5LTM4YWQtNDY4Yy05MmEzLWI3MDM1MTdmYWE2Yw?fit=crop&w=638&h=440&bg=000000&auto=enhance,compress&q=80',
