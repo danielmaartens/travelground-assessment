@@ -610,9 +610,10 @@
 
         &-icon {
             position: relative;
-            top: 2px;
+            top: 3px;
             height: 15px;
             width: 15px;
+            right: 2px;
         }
     }
 
@@ -621,10 +622,11 @@
         vertical-align: middle;
         cursor: pointer;
         width: 50%;
+        padding-left: 4px;
 
         &-icon {
             position: relative;
-            top: 2px;
+            top: 3px;
             height: 15px;
             width: 15px;
         }
