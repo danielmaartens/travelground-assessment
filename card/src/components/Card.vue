@@ -100,9 +100,9 @@
                 </div>
 
                 <div class="view-more">
-                    <div @click.prevent="toggleBooking()" class="view-more-button view-more-button-left book">
-                        <img class="book-icon" src="@/assets/booking.png">
-                        <span>
+                    <div @click.prevent="toggleBooking()" class="view-more-button view-more-button-left booking">
+                        <img class="booking-icon" src="@/assets/booking.png">
+                        <span class="booking-text">
                         bespreek
                     </span>
                     </div>
@@ -710,15 +710,19 @@
 
     }
 
-    .book {
+    .booking {
         border-right: 1px solid #5d5a5a;
 
         &-icon {
             position: relative;
             top: 3px;
-            height: 15px;
-            width: 15px;
-            right: 2px;
+            width: 20px;
+            right: 3.5px;
+        }
+
+        &-text {
+            position: relative;
+            right: 4px;
         }
     }
 
