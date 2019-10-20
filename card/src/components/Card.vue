@@ -9,8 +9,8 @@
 
         <div class="heading">
             <div class="establishment">
-            <div class="name">{{currentEstablishment.name}}</div>
-            <div class="location">{{currentEstablishment.city}}</div>
+                <div class="name">{{currentEstablishment.name}}</div>
+                <div class="location">{{currentEstablishment.city}}</div>
             </div>
             <div class="tourism-grading" :style="cssVars">
 
@@ -85,10 +85,16 @@
 
                 <div class="view-more">
                     <div @click.prevent="toggleBooking()" class="view-more-button view-more-button-left book">
+                        <img class="book-icon" src="@/assets/booking.png">
+                        <span>
                         bespreek
+                    </span>
                     </div>
                     <div @click.prevent="toggleViewMore()" class="view-more-button view-more-button-right">
-                        sien meer
+                    <span>
+                        weet meer
+                    </span>
+                        <img class="view-more-button-icon" src="@/assets/information.png">
                     </div>
 
                 </div>
@@ -142,9 +148,9 @@
                 <button>hi</button>
                 <button>hi</button>
             </div>
-        <div class="brief-info">
-            <p>{{currentEstablishment.shortDescription}}</p>
-        </div>
+            <div class="brief-info">
+                <p>{{currentEstablishment.shortDescription}}</p>
+            </div>
 
         </div>
     </div>
@@ -154,6 +160,7 @@
     import {mapState} from 'vuex';
     import StarRating from 'vue-star-rating';
     import JQuery from 'jquery';
+
     const $ = JQuery;
 
     export default {
@@ -406,7 +413,7 @@
     }
 
     .info-container {
-        height: 52px;
+        height: 55px;
         background-color: #5A5B5D;
 
         color: white;
@@ -447,11 +454,12 @@
             display: inline-block;
             width: 40%;
             position: relative;
-            bottom: 15px;
+            bottom: 12px;
         }
 
         &-left {
-
+            position: relative;
+            top: 4px;
             display: inline-block;
             margin: 0 10px;
 
@@ -470,7 +478,6 @@
         }
 
         &-bed {
-            position: relative;
             width: 20%;
             right: 5px;
 
@@ -572,13 +579,13 @@
     .button-container {
         display: flex;
         flex-direction: column;
-        flex: .4;
+        flex: .45;
     }
 
     .view-more {
         flex: 0.5;
         margin-top: auto;
-        height: 40%;
+        height: 46%;
         color: white;
         background: #ED762D;
         border-radius: 5px 5px 0 0;
@@ -600,12 +607,27 @@
 
     .book {
         border-right: 1px solid #5d5a5a;
+
+        &-icon {
+            position: relative;
+            top: 2px;
+            height: 15px;
+            width: 15px;
+        }
     }
 
     .view-more-button {
         display: table-cell;
         vertical-align: middle;
         cursor: pointer;
+        width: 50%;
+
+        &-icon {
+            position: relative;
+            top: 2px;
+            height: 15px;
+            width: 15px;
+        }
     }
 
     .bottom-container {
