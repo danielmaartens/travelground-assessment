@@ -88,7 +88,7 @@
     }
 
     .info-item-list {
-        background: #FFF9EF;
+        background: #FFF;
         border: 1px solid #5A5B5D;
         border-radius: 5px;
 
