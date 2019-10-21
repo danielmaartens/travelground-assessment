@@ -61,7 +61,7 @@
                 <div class="comment-ratings-box">
                     <i></i>
                     <div class="individual-comment">
-                        <p>{{review.comment}}</p>
+                        <p v-for="(p,index) in review.comment" v-bind:key="index">{{p}}</p>
                     </div>
 
                     <div class="individual-ratings">
@@ -195,6 +195,7 @@
 
     .individual-review {
         width: 100%;
+        margin-bottom: 20px;
     }
 
     .individual-review-header {

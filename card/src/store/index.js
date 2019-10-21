@@ -144,7 +144,7 @@ export default new Vuex.Store({
             reviews: [
                 {
                     reviewer: 'Johan Labuschagne',
-                    comment: "Lekker plek. Duur, maar 'n lekke jol.",
+                    comment: ["Lekker plek. Duur, maar 'n lekke jol."],
                     ratings: [
                         ['Waarde', 2],
                         ['Ligging', 5],
@@ -152,7 +152,38 @@ export default new Vuex.Store({
                         ['Veiligheid', 5],
                         ['Netheid', 5],
                     ],
-                    date: '2019-10-07T07:15:20.087Z'
+                    date: '2019-10-07T09:15:20.087'
+                },
+                {
+                    reviewer: 'Netty van Niekerk',
+                    comment: [
+                        "Asemrowend ! Smul lekker kos en vriendelike diens !",
+                        "Baie dankie dat julle my naweek so spesiaal gemaak het !"
+                    ],
+                    ratings: [
+                        ['Waarde', 3],
+                        ['Ligging', 5],
+                        ['Diens', 5],
+                        ['Veiligheid', 5],
+                        ['Netheid', 5],
+                    ],
+                    date: '2019-09-05T15:02:20.087'
+                },
+                {
+                    reviewer: 'Os van Onnoselen',
+                    comment: [
+                        "Uhm, nee boet. Die plek lyk my charge te veel en gee te min.",
+                        "Hulle wou my nie toelaat om my jag stuk daar te braai nie.",
+                        "Vi daai geld wat hulle my gevra het om da te bly kon hulle ten minste aanbied om die ding te slag !"
+                    ],
+                    ratings: [
+                        ['Waarde', 1],
+                        ['Ligging', 1],
+                        ['Diens', 1],
+                        ['Veiligheid', 1],
+                        ['Netheid', 1],
+                    ],
+                    date: '2019-04-08T18:20:20.087'
                 }
             ],
 
