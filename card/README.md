@@ -1,4 +1,10 @@
-# card
+# TravelGround Assessment
+
+## Disclaimers
+
+I have taken the liberty to assume certain data structures in order to construct this Card, using as many pseudo variable inputs as possible so that the card can easily be re-used without too much refactoring. 
+
+All my assumed data structures can be found in the `store.js` file.
 
 ## Project setup
 ```

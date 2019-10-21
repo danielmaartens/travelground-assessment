@@ -206,6 +206,18 @@
                 const maxRatingSum = reviews.length * 25;
                 const reviewsMapped = {};
 
+                /**
+                 * The overall ratings are comprised of 2 core calculations:
+                 *
+                 * 1) the overall average rating, which is calculated as follows:
+                 *  sum of ALL RATINGS across ALL REVIEWS given by user DIVIDED by the MAXIMUM possible total:
+                 *
+                 *  i.e. 5 reviews with 5 indicators each, and each indicators maximum measure is 5,
+                 *  then we have 5 * 5 * 5 = 125.
+                 *
+                 * 2) the average rating of EACH INDICATOR across all reviews. Similar logic applied as above in (1).
+                 */
+
                 const allRatings = reviews.reduce((ratings, currentReview) => {
 
                     if (Object.keys(reviewsMapped).length === 0) {

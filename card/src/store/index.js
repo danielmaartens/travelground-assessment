@@ -3,8 +3,6 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex);
 
-const IMAGE_WIDTH = 500;
-const IMAGE_HEIGHT = 300;
 const PRICE_RANK_DESCRIPTIONS = {
     1: 'Verskriklik Goedkoop',
     2: 'Goedkoop',
@@ -15,8 +13,6 @@ const PRICE_RANK_DESCRIPTIONS = {
 
 export default new Vuex.Store({
     state: {
-        imageHeight: IMAGE_HEIGHT,
-        imageWidth: IMAGE_WIDTH,
         priceRankDescriptions: PRICE_RANK_DESCRIPTIONS,
         pages: {
             BOOKING: 'booking',

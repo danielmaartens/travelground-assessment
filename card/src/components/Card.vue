@@ -63,7 +63,6 @@
             }
         },
         mounted() {
-            console.log('CARD');
             const establishment = this.currentEstablishment;
 
             this.establishment = establishment;
@@ -75,7 +74,6 @@
                     'currentEstablishment',
                 ],
             ),
-
         },
         methods: {
             toggleLike() {
