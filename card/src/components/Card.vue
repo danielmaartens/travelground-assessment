@@ -96,7 +96,7 @@
                             :star-size="25"
                             :glow="0"
                             :increment="0.1"
-                            inactive-color="#E5F4E3"
+                            inactive-color="#fff9ef"
                             active-color="#ED762D"
                             :border-width="2"
                             border-color="#FFFFFF"
@@ -211,7 +211,7 @@
                                         :star-size="10"
                                         :glow="0"
                                         :increment="0.1"
-                                        inactive-color="#E5F4E3"
+                                        inactive-color="#fff"
                                         active-color="#ED762D"
                                         :border-width="2"
                                         border-color="#5d5a5a"
@@ -243,7 +243,7 @@
                                         :star-size="20"
                                         :glow="0"
                                         :increment="0.1"
-                                        inactive-color="#E5F4E3"
+                                        inactive-color="#fff"
                                         active-color="#ED762D"
                                         :border-width="2"
                                         border-color="#5d5a5a"
@@ -275,7 +275,7 @@
                                                 :star-size="10"
                                                 :glow="0"
                                                 :increment="0.1"
-                                                inactive-color="#E5F4E3"
+                                                inactive-color="#fff"
                                                 active-color="#ED762D"
                                                 :border-width="2"
                                                 border-color="#5d5a5a"
@@ -1159,8 +1159,9 @@
         font-size: 12px;
         width: 48%;
         margin-right: 2%;
-        background: white;
+        background: #ffffff;
         border: 1px solid #b9babb;
+        border-radius: 5px;
 
         p {
             text-align: justify;
