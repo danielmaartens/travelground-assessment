@@ -158,7 +158,7 @@
                 if (!showBriefInfo) {
                     setTimeout(() => {
                         document.getElementById('bottom-page-scroll-to').scrollIntoView();
-                    }, 1500);
+                    }, 500);
                 }
 
                 this.showBriefInfo(showBriefInfo);

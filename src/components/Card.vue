@@ -23,8 +23,8 @@
         <Carousel/>
         <InfoBanner :on-mouse-move="onMouseMove"/>
 
+        <span id="bottom-page-scroll-to"></span>
         <div class="bottom-container">
-            <span id="bottom-page-scroll-to"></span>
             <ViewMorePage/>
             <ReviewPage/>
             <div class="brief-info">
