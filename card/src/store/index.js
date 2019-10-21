@@ -18,6 +18,11 @@ export default new Vuex.Store({
         imageHeight: IMAGE_HEIGHT,
         imageWidth: IMAGE_WIDTH,
         priceRankDescriptions: PRICE_RANK_DESCRIPTIONS,
+        pages: {
+            BOOKING: 'booking',
+            REVIEW: 'review',
+            VIEW_MORE: 'view-more'
+        },
         currentEstablishment: {
             name: 'Tsala Treetop Lodge',
             location: {
