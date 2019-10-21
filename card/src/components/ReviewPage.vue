@@ -59,8 +59,9 @@
                 </div>
 
                 <div class="comment-ratings-box">
-                    <i></i>
+
                     <div class="individual-comment">
+                        <i></i>
                         <p v-for="(p,index) in review.comment" v-bind:key="index">{{p}}</p>
                     </div>
 
@@ -209,14 +210,24 @@
 
     .comment-ratings-box {
         display: flex;
+    }
+
+    .individual-comment {
+        word-wrap: break-spaces;
+        font-size: 12px;
+        width: 48%;
+        margin-right: 2%;
+        background: #ffffff;
+        border: 1px solid #b9babb;
+        border-radius: 5px;
 
         i:before {
             content: "";
             width: 0;
             height: 0;
-            position: absolute;
-            bottom: 73px;
-            right: 469px;
+            position: relative;
+            top: 1px;
+            right: 0px;
             border-left: 10px solid #ffffff;
             border-right: 10px solid #00bfb600;
             border-top: 10px solid #00bfb600;
@@ -229,32 +240,29 @@
             content: "";
             width: 0px;
             height: 10px;
-            position: absolute;
-            bottom: 75px;
-            right: 470px;
+            position: relative;
+            bottom: 1px;
+            right: 21px;
             border-left: 10px solid #b9babb;
             border-right: 10px solid #00bfb600;
             border-top: 10px solid #53585800;
         }
-    }
-
-    .individual-comment {
-        word-wrap: break-spaces;
-        font-size: 12px;
-        width: 48%;
-        margin-right: 2%;
-        background: #ffffff;
-        border: 1px solid #b9babb;
-        border-radius: 5px;
 
         p {
             text-align: justify;
-            margin: 10px;
+            margin: 0 10px;
+            position: relative;
+            bottom: 8px;
+
+            &:not(:last-child) {
+                margin-bottom: 10px;
+            }
         }
     }
 
     .individual-ratings {
         width: 52%;
+        height: 80px;
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(25%, 1fr));
         grid-auto-rows: auto;
