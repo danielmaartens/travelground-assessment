@@ -290,7 +290,7 @@
     .review-date {
         position: relative;
         font-size: 10px;
-        left: 10px;
+        left: 8px;
         top: 10px;
         margin: 2px;
     }
