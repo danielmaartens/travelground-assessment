@@ -203,7 +203,7 @@
                         <div class="individual-rating" v-for="(overallRating, ratingIndex) in rating.overallRatings"
                              v-bind:key="`--average-rating-${ratingIndex}`">
                             <div class="rating-title">{{overallRating[0]}}</div>
-                            <div class="individual-star-rating">
+                            <div class="overall-average-star-rating">
                                 <star-rating
                                         :show-rating="false"
                                         :rating="overallRating[1]"
@@ -1183,6 +1183,11 @@
         display: inline-block;
         width: 20%;
 
+    }
+
+    .individual-star-rating {
+        position: relative;
+        bottom: 3px;
     }
 
     .rating-title {
