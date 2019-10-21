@@ -299,7 +299,7 @@
         font-weight: bold;
         font-size: 16px;
         position: relative;
-        top: 11px;
+        top: 14px;
     }
 
     .average-star-rating {
